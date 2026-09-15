@@ -1,2 +1,8 @@
 *.svg linguist-generated=true
 *.svg -diff
+
+# Os geradores sao ferramenta deste repo, nao o trabalho que ele representa.
+# Sem isto o Python daqui entra na contagem de bytes por linguagem da conta e
+# aparece no proprio radar de linguagens que estes scripts desenham.
+scripts/** linguist-vendored=true
+preview.html linguist-vendored=true

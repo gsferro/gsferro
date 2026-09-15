@@ -3,15 +3,15 @@
   "projects": [
     {
       "repo": "filament-starter-kit-easy",
-      "description": "Starter kit para subir um painel Filament ja configurado, com as decisoes chatas tomadas e o basico pronto no primeiro comando."
+      "description": "Starter kit para subir um painel Filament já configurado, com as decisões chatas tomadas e o básico pronto no primeiro comando."
     },
     {
       "repo": "filament-stat-plus-easy",
-      "description": "Stat cards para Filament v3, v4 e v5 com icone de canto, borda de destaque colorida, contador animado e skeleton de carregamento."
+      "description": "Stat cards para Filament v3, v4 e v5 com ícone de canto, borda de destaque colorida, contador animado e skeleton de carregamento."
     },
     {
       "repo": "filament-odometer-easy",
-      "description": "Widget de odometro animado para Filament. O pacote mais baixado da colecao no Packagist."
+      "description": "Widget de odômetro animado para Filament, com o contador subindo até o valor em vez de aparecer pronto na tela."
     },
     {
       "repo": "laravel-powermodel",
@@ -23,7 +23,7 @@
     },
     {
       "repo": "laravel-translation-solution-easy",
-      "description": "Traducao de conteudo no Laravel de ponta a ponta, da migration a exibicao na view."
+      "description": "Tradução de conteúdo no Laravel de ponta a ponta, da migration à exibição na view."
     }
   ]
 }

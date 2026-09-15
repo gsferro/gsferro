@@ -112,7 +112,7 @@ def render(vendor: str, packages: list[dict], totals: dict, theme: str,
     tiles = [
         (br(totals["total"]), "downloads"),
         (br(totals["packages"]), "pacotes"),
-        (br(totals["monthly"]), "no mes"),
+        (br(totals["monthly"]), "no mês"),
     ]
     tw = (W - 2 * pad) / 3
     for i, (value, label) in enumerate(tiles):
