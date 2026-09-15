@@ -12,7 +12,7 @@
 
 <!-- NOME / TAGLINE - digitacao animada -->
 <a href="https://github.com/gsferro">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=26&duration=2800&pause=900&color=FF4D3D&center=true&vCenter=true&width=880&lines=Guilherme+Ferro+%7C+Dev+PHP+%26+Laravel;Simplificando+o+complexo+desde+2008;Pacotes+que+deixam+o+Laravel+easy;Pacotes+publicados+no+Packagist" alt="Guilherme Ferro, desenvolvedor PHP e Laravel">
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=26&duration=2800&pause=900&color=FF4D3D&center=true&vCenter=true&width=880&lines=Guilherme+Ferro+%7C+Especialista+em+PHP+%26+Laravel;Simplificando+o+complexo+desde+2008;Pacotes+que+deixam+o+Laravel+easy;Pacotes+publicados+no+Packagist" alt="Guilherme Ferro, desenvolvedor PHP e Laravel">
 </a>
 
 <br>
