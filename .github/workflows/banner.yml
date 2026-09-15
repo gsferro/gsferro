@@ -1,0 +1,41 @@
+name: Banner
+
+# O banner e caro de gerar (dithering + transporte otimo) e so muda quando a
+# foto, os logos ou o gerador mudam. Por isso nao roda no agendamento diario.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "assets/source/**"
+      - "scripts/banner/**"
+      - ".github/workflows/banner.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  banner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Tudo em Python puro: os SVGs das marcas sao rasterizados por
+      # svgelements + Pillow, entao nao ha dependencia de sistema para instalar.
+      - name: Dependencias do Python
+        run: pip install -r scripts/banner/requirements.txt
+
+      - name: Gerar banner
+        run: python scripts/banner/generate.py
+
+      - name: Commit se mudou
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/banner-*.svg
+          git diff --staged --quiet || git commit -m "chore: regenera o banner"
+          git push

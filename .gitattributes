@@ -1,0 +1,2 @@
+*.svg linguist-generated=true
+*.svg -diff

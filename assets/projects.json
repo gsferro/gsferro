@@ -1,0 +1,29 @@
+{
+  "_comment": "Pacotes em destaque, na ordem do README. Estrelas, forks e linguagem vem da API a cada execucao; a descricao daqui sobrescreve a do GitHub.",
+  "projects": [
+    {
+      "repo": "filament-starter-kit-easy",
+      "description": "Starter kit para subir um painel Filament ja configurado, com as decisoes chatas tomadas e o basico pronto no primeiro comando."
+    },
+    {
+      "repo": "filament-stat-plus-easy",
+      "description": "Stat cards para Filament v3, v4 e v5 com icone de canto, borda de destaque colorida, contador animado e skeleton de carregamento."
+    },
+    {
+      "repo": "filament-odometer-easy",
+      "description": "Widget de odometro animado para Filament. O pacote mais baixado da colecao no Packagist."
+    },
+    {
+      "repo": "laravel-powermodel",
+      "description": "Camada sobre o Eloquent que reduz o boilerplate de model: escopos, casts e relacionamentos declarados de forma direta."
+    },
+    {
+      "repo": "laravel-filtereasy",
+      "description": "Filtros de query declarativos para o Eloquent, sem encher o controller de condicionais."
+    },
+    {
+      "repo": "laravel-translation-solution-easy",
+      "description": "Traducao de conteudo no Laravel de ponta a ponta, da migration a exibicao na view."
+    }
+  ]
+}

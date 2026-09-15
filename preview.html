@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview dos assets</title>
+<style>
+  :root {
+    --bg: #0a0e14; --panel: #0d1117; --line: #262c36;
+    --text: #e6edf3; --muted: #8b949e; --accent: #ff4d3d;
+  }
+  :root[data-theme="light"] {
+    --bg: #f6f8fa; --panel: #fff; --line: #d0d7de;
+    --text: #1f2328; --muted: #57606a; --accent: #c7301f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 16px 64px; background: var(--bg); color: var(--text);
+    font: 15px/1.6 ui-sans-serif, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; }
+  header { display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+           justify-content: space-between; margin-bottom: 8px; }
+  h1 { font-size: 20px; margin: 0; letter-spacing: -.01em; }
+  p.lead { color: var(--muted); margin: 0 0 28px; font-size: 14px; }
+  button {
+    font: inherit; font-size: 13px; padding: 8px 16px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--panel); color: var(--text);
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--accent); }
+  section { margin: 36px 0; }
+  h2 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .12em;
+    color: var(--accent); margin: 0 0 14px; font-weight: 700;
+  }
+  .grid { display: flex; flex-wrap: wrap; gap: 16px; }
+  figure {
+    margin: 0; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px; max-width: 100%;
+  }
+  figure img { display: block; max-width: 100%; height: auto; border-radius: 6px; }
+  figcaption { color: var(--muted); font-size: 11px; margin-top: 10px;
+               font-family: ui-monospace, Consolas, monospace; }
+  .full { width: 100%; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Preview dos assets do perfil</h1>
+  <button id="toggle">alternar tema</button>
+</header>
+<p class="lead">
+  Cada arquivo tem versao dark e light. O botao troca qual das duas esta em tela,
+  do mesmo jeito que o <code>&lt;picture&gt;</code> do README faz pelo
+  <code>prefers-color-scheme</code>.
+</p>
+
+<section>
+  <h2>banner</h2>
+  <div class="grid">
+    <figure class="full">
+      <img class="themed" data-src="assets/banner-THEME.svg" alt="banner profile.sh --live">
+      <figcaption>assets/banner-{dark,light}.svg</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <h2>radares</h2>
+  <div class="grid">
+    <figure>
+      <img class="themed" data-src="assets/radar-THEME.svg" width="400" alt="radar de skills">
+      <figcaption>assets/radar-{dark,light}.svg</figcaption>
+    </figure>
+    <figure>
+      <img class="themed" data-src="assets/radar-langs-THEME.svg" width="400" alt="radar de linguagens">
+      <figcaption>assets/radar-langs-{dark,light}.svg</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <h2>numeros</h2>
+  <div class="grid">
+    <figure>
+      <img class="themed" data-src="assets/card-stats-THEME.svg" width="480" alt="estatisticas do GitHub">
+      <figcaption>assets/card-stats-{dark,light}.svg</figcaption>
+    </figure>
+    <figure>
+      <img class="themed" data-src="assets/card-packagist-THEME.svg" width="480" alt="downloads no Packagist">
+      <figcaption>assets/card-packagist-{dark,light}.svg</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <h2>pacotes em destaque</h2>
+  <div class="grid" id="repos"></div>
+</section>
+
+</div>
+<script>
+  const REPOS = [
+    "filament-starter-kit-easy",
+    "filament-stat-plus-easy",
+    "filament-odometer-easy",
+    "laravel-powermodel",
+    "laravel-filtereasy",
+    "laravel-translation-solution-easy",
+  ];
+  const repoGrid = document.getElementById("repos");
+  for (const name of REPOS) {
+    const fig = document.createElement("figure");
+    fig.innerHTML =
+      `<img class="themed" data-src="assets/card-${name}-THEME.svg" width="420" alt="${name}">` +
+      `<figcaption>assets/card-${name}-{dark,light}.svg</figcaption>`;
+    repoGrid.append(fig);
+  }
+
+  const root = document.documentElement;
+  function paint() {
+    const theme = root.dataset.theme === "light" ? "light" : "dark";
+    for (const img of document.querySelectorAll("img.themed")) {
+      const next = img.dataset.src.replace("THEME", theme);
+      if (img.getAttribute("src") !== next) img.setAttribute("src", next);
+    }
+  }
+  // Comeca no tema do sistema, igual ao README; o botao so sobrescreve daqui.
+  if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+    root.dataset.theme = "light";
+  }
+  paint();
+  document.getElementById("toggle").addEventListener("click", () => {
+    root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
+    paint();
+  });
+</script>
+</body>
+</html>

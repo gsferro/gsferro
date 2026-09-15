@@ -1,0 +1,13 @@
+{
+  "title": "Skill Radar",
+  "_comment": "Autoavaliacao, 0-100. Edite estes valores e o workflow Charts redesenha o radar.",
+  "axes": [
+    { "label": "PHP",                  "value": 92 },
+    { "label": "Laravel",              "value": 90 },
+    { "label": "Filament",             "value": 84 },
+    { "label": "Livewire",             "value": 78 },
+    { "label": "Arquitetura / Design", "value": 80 },
+    { "label": "Banco de Dados",       "value": 85 },
+    { "label": "Pacotes Open Source",  "value": 88 }
+  ]
+}

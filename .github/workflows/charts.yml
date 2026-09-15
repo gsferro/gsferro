@@ -1,0 +1,69 @@
+name: Charts and cards
+
+on:
+  schedule:
+    - cron: "30 6 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "assets/skills.json"
+      - "assets/projects.json"
+      - "scripts/radar.py"
+      - "scripts/cards.py"
+      - "scripts/packagist.py"
+      - ".github/workflows/charts.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  charts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Radar de autoavaliacao. Edite assets/skills.json para mudar.
+      - name: Radar de skills
+        run: python scripts/radar.py --data assets/skills.json -o assets/radar
+
+      # Radar das linguagens reais, somando bytes dos repos publicos nao-fork.
+      - name: Radar de linguagens
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/radar.py \
+            --github "${{ github.repository_owner }}" \
+            --title "Linguagens (ao vivo)" \
+            --values \
+            -o assets/radar-langs
+
+      # Cards de stats e de repositorio gerados aqui dentro. Substituem o
+      # github-readme-stats e o github-profile-trophy, cujas instancias
+      # publicas compartilhadas devolvem 503 e 402 e derrubam a secao inteira.
+      # METRICS_TOKEN e um PAT e consegue ler o grafico de contribuicoes; sem
+      # ele o GITHUB_TOKEN embutido serve, apenas com menos tiles.
+      - name: Cards de stats e repositorios
+        env:
+          GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/cards.py \
+            --user "${{ github.repository_owner }}" \
+            --projects assets/projects.json \
+            --out assets
+
+      # Downloads dos pacotes publicados no Packagist.
+      - name: Card do Packagist
+        run: python scripts/packagist.py --vendor gsferro --out assets
+
+      - name: Commit se mudou
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/radar-*.svg assets/card-*.svg
+          git diff --staged --quiet || git commit -m "chore: atualiza graficos e cards"
+          git push
