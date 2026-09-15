@@ -170,26 +170,50 @@ def text_width(s: str, size: float) -> float:
     return len(s) * size * 0.53
 
 
+def fit(word: str, size: float, max_w: float) -> int:
+    """Quantos caracteres de `word` cabem em max_w. Nunca menos de um."""
+    n = len(word)
+    while n > 1 and text_width(word[:n], size) > max_w:
+        n -= 1
+    return n
+
+
 def wrap(text: str, size: float, max_w: float, max_lines: int) -> list[str]:
-    words, lines, cur = text.split(), [], ""
-    for w in words:
-        trial = f"{cur} {w}".strip()
-        if text_width(trial, size) <= max_w or not cur:
+    """Quebra o texto em ate `max_lines` linhas que cabem em `max_w`.
+
+    Quebra tambem no meio de uma palavra que sozinha nao caiba - uma URL na
+    descricao que veio do GitHub, por exemplo. Sem isso a linha e emitida
+    inteira e vaza para fora da moldura do card.
+
+    A versao anterior aparava a ultima linha com `rsplit(" ", 1)[0]` ate as
+    reticencias caberem, o que nunca terminava quando essa linha ja era uma
+    unica palavra larga: o rsplit devolvia a mesma string para sempre. Toda
+    repeticao aqui encurta a string em pelo menos um caractere.
+    """
+    words = [w for w in text.split() if w]
+    lines: list[str] = []
+    cur = ""
+    while words and len(lines) < max_lines:
+        trial = f"{cur} {words[0]}".strip()
+        if text_width(trial, size) <= max_w:
             cur = trial
-        else:
+            words.pop(0)
+        elif cur:
             lines.append(cur)
-            cur = w
-            if len(lines) == max_lines:
-                break
+            cur = ""
+        else:
+            cut = fit(words[0], size, max_w)
+            lines.append(words[0][:cut])
+            words[0] = words[0][cut:]
     if cur and len(lines) < max_lines:
         lines.append(cur)
-    if len(lines) == max_lines and words:
-        # did everything fit?
-        used = len(" ".join(lines).split())
-        if used < len(words):
-            while lines and text_width(lines[-1] + "…", size) > max_w:
-                lines[-1] = lines[-1].rsplit(" ", 1)[0]
-            lines[-1] += "…"
+        cur = ""
+
+    if (words or cur) and lines:
+        last = lines[-1]
+        while last and text_width(last + "…", size) > max_w:
+            last = last[:-1]
+        lines[-1] = last + "…"
     return lines
 
 
@@ -277,12 +301,15 @@ def render_repo(repo, theme):
 
     for path, count in ((ICON_STAR, repo.get("stars", 0)),
                         (ICON_FORK, repo.get("forks", 0))):
+        # Pelo br(), igual aos demais numeros: sem isso um repo com mil
+        # estrelas mostraria 1234 aqui e 1.234 no card de stats acima.
+        shown = br(count)
         out.append(icon(path, x, fy - 11, 12, c["muted"]))
         out.append(
             f'<text x="{x + 17}" y="{fy}" font-size="11" fill="{c["muted"]}">'
-            f'{count}</text>'
+            f'{esc(shown)}</text>'
         )
-        x += 17 + text_width(str(count), 11) + 18
+        x += 17 + text_width(shown, 11) + 18
 
     return frame(W, H, c, "".join(out), f'{repo["name"]} repository card')
 

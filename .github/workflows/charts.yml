@@ -17,6 +17,13 @@ on:
 permissions:
   contents: write
 
+# Mesmo grupo do workflow Banner: os dois commitam em main, e um push que toque
+# os dois conjuntos de paths dispara ambos a partir do mesmo SHA. Sem serializar,
+# quem terminasse depois levava non-fast-forward e falhava sem commitar nada.
+concurrency:
+  group: assets-main
+  cancel-in-progress: false
+
 jobs:
   charts:
     runs-on: ubuntu-latest
@@ -27,12 +34,19 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Cada fonte roda com continue-on-error porque o passo de commit e um so,
+      # no fim. Sem isso uma indisponibilidade do Packagist - justamente a classe
+      # de queda que motivou gerar estes SVGs aqui dentro - abortava o job depois
+      # dos radares e dos cards ja terem sido redesenhados, e jogava tudo fora.
+
       # Radar de autoavaliacao. Edite assets/skills.json para mudar.
       - name: Radar de skills
+        continue-on-error: true
         run: python scripts/radar.py --data assets/skills.json -o assets/radar
 
       # Radar das linguagens reais, somando bytes dos repos publicos nao-fork.
       - name: Radar de linguagens
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -48,6 +62,7 @@ jobs:
       # METRICS_TOKEN e um PAT e consegue ler o grafico de contribuicoes; sem
       # ele o GITHUB_TOKEN embutido serve, apenas com menos tiles.
       - name: Cards de stats e repositorios
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.METRICS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
@@ -58,12 +73,21 @@ jobs:
 
       # Downloads dos pacotes publicados no Packagist.
       - name: Card do Packagist
+        continue-on-error: true
         run: python scripts/packagist.py --vendor gsferro --out assets
 
       - name: Commit se mudou
+        if: ${{ !cancelled() }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/radar-*.svg assets/card-*.svg
-          git diff --staged --quiet || git commit -m "chore: atualiza graficos e cards"
+          if git diff --staged --quiet; then
+            echo "nada mudou"
+            exit 0
+          fi
+          git commit -m "chore: atualiza graficos e cards"
+          # O agendamento diario e um commit feito na mao podem avancar o main
+          # enquanto este job roda; sem o rebase o push volta non-fast-forward.
+          git pull --rebase --autostash origin main
           git push

@@ -98,7 +98,9 @@ def render(vendor: str, packages: list[dict], totals: dict, theme: str,
     c = THEMES[theme]
     pad, W = 22, 480
     shown = packages[:top]
-    H = pad + 52 + 17 + 26 + len(shown) * 21 + pad
+    # A altura mede ate a baseline da ultima linha, nao ate uma linha alem
+    # dela: `len(shown) * 21` deixava 21 px de faixa morta no rodape.
+    H = pad + 52 + 17 + 26 + (len(shown) - 1) * 21 + pad
 
     out = [
         f'<text x="{pad}" y="{pad + 14}" font-size="15" font-weight="700" '

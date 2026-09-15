@@ -12,7 +12,7 @@
 
 <!-- NOME / TAGLINE - digitacao animada -->
 <a href="https://github.com/gsferro">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=26&duration=2800&pause=900&color=FF4D3D&center=true&vCenter=true&width=880&lines=Guilherme+Ferro+%7C+Dev+PHP+%26+Laravel;Pacotes+que+deixam+o+Laravel+easy;21+pacotes+publicados+no+Packagist;Simplificando+o+complexo+desde+2015" alt="Guilherme Ferro, desenvolvedor PHP e Laravel">
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=26&duration=2800&pause=900&color=FF4D3D&center=true&vCenter=true&width=880&lines=Guilherme+Ferro+%7C+Dev+PHP+%26+Laravel;Pacotes+que+deixam+o+Laravel+easy;Pacotes+publicados+no+Packagist;Simplificando+o+complexo+desde+2015" alt="Guilherme Ferro, desenvolvedor PHP e Laravel">
 </a>
 
 <br>
@@ -36,7 +36,7 @@ Sou desenvolvedor **PHP / Laravel** e apaixonado por simplificar problemas compl
 O que me move é transformar aquela solução que todo projeto refaz do zero em um pacote
 que você instala com um `composer require` e esquece.
 
-- 📦 **21 pacotes publicados no [Packagist](https://packagist.org/packages/gsferro/)** — a maioria carrega `easy` no nome, e isso não é enfeite: é o contrato.
+- 📦 **Pacotes publicados no [Packagist](https://packagist.org/packages/gsferro/)** — o card acima conta quantos e quantos downloads; a maioria carrega `easy` no nome, e isso não é enfeite: é o contrato.
 - 🎛️ **Ecossistema Filament**: starter kit, stat cards, odometer. Painel administrativo pronto sem reescrever o mesmo widget em todo projeto.
 - ⚡ **Laravel de ponta a ponta**: Eloquent, Livewire, Blade, filas, testes. Da migration até a view.
 - 🧩 **Filosofia**: menos boilerplate, mais decisão tomada. Se você precisou escrever aquilo duas vezes, era para ser um pacote.
@@ -188,7 +188,7 @@ que você instala com um `composer require` e esquece.
 </tr>
 </table>
 
-<sub><a href="https://packagist.org/packages/gsferro/">ver os 21 pacotes no Packagist →</a></sub>
+<sub><a href="https://packagist.org/packages/gsferro/">ver todos os pacotes no Packagist →</a></sub>
 
 </div>
 

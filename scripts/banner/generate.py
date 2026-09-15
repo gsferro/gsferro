@@ -49,7 +49,7 @@ ROWS = [
     ("Core.Frontend", "Blade / Bootstrap / Alpine.js"),
     ("Core.Database", "MySQL / Postgres / SQL Server"),
     ("Core.Infra", "Docker / Composer / GitHub Actions"),
-    ("Grid.Packagist", "gsferro / 21 pacotes"),
+    ("Grid.Packagist", "packagist.org/packages/gsferro"),
     ("Grid.LinkedIn", "/in/guilherme-ferro"),
     ("Grid.GitHub", "gsferro"),
     ("Grid.Mail", "gsferroti+github@gmail.com"),
@@ -293,7 +293,19 @@ def transport(source: np.ndarray, target: np.ndarray) -> np.ndarray:
 
 
 def num(value: float) -> str:
+    """Uma casa decimal, o suficiente para coordenada em pixel."""
     return f"{value:.1f}".rstrip("0").rstrip(".")
+
+
+def frac(value: float) -> str:
+    """Fracao de 0 a 1 com quatro casas, para keyTimes.
+
+    Com a precisao de `num()` os limites de fase viravam 0.2/0.3/0.4/... e a
+    cadencia saia irreconhecivel: o retrato ficava 2,84 s no ar em vez de 3,0,
+    o PHP 1,42 s em vez de 2,0 e o Laravel 2,84 s em vez de 2,0. keyTimes sao
+    normalizados, entao uma casa decimal e grossa demais.
+    """
+    return f"{value:.4f}".rstrip("0").rstrip(".")
 
 
 def point_path(points: np.ndarray) -> str:
@@ -346,7 +358,7 @@ def render_svg(
     # Limites de fase explicitos e irregulares: 3.0 de retrato, 2.0 por logo
     # e quatro transicoes de 1.3 = 14.2 segundos.
     times = [0, 3.0, 4.3, 6.3, 7.6, 9.6, 10.9, 12.9, 14.2]
-    key_times = ";".join(num(v / LOOP_SECONDS) for v in times)
+    key_times = ";".join(frac(v / LOOP_SECONDS) for v in times)
     # Devolver cada viajante a coordenada exata de partida mantem o fim do loop
     # invisivel. Todo morph entre logos usa transporte otimo.
     frames = [source, source, php, php, laravel, laravel, filament, filament, source]

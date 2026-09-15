@@ -263,7 +263,10 @@ def render(title, axes, theme: str, size: int, rings: int, show_values: bool,
 
 
 def esc(s: str) -> str:
-    return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+    # As aspas importam: o resultado tambem entra em aria-label="...", e um
+    # --title com aspas fechava o atributo cedo e gerava um SVG que nao parseia.
+    return (s.replace("&", "&amp;").replace("<", "&lt;")
+            .replace(">", "&gt;").replace('"', "&quot;"))
 
 
 # --------------------------------------------------------------------------- #
